@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+
 //gave up on the mongoDB with mongoose. Perhaps we can see where I went wrong later on if there is time! 
 //create interface for typescript
 /*interface I_userSchema {

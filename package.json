@@ -1,0 +1,36 @@
+{
+  "name": "express-node.js-typescript-webserver",
+  "version": "1.0.0",
+  "description": "Backend Express/TS/Node.Js",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@types/node": "^14.14.12",
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.9",
+    "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AARODKB2012/Express-Node.js-Typescript-WebServer.git"
+  },
+  "author": "Angel Selva Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AARODKB2012/Express-Node.js-Typescript-WebServer/issues"
+  },
+  "homepage": "https://github.com/AARODKB2012/Express-Node.js-Typescript-WebServer#readme"
+}

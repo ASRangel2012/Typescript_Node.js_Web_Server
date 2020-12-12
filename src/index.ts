@@ -1,13 +1,14 @@
 import express from "express";
-import mongoose from "mongoose"; //middleware to connect to mongoDB
 import bodyparser from "body-parser";
 import { User, userArray } from "./models/userObj";
 import { usersRouter } from "./routes/Users";
 import cookieParser from 'cookie-parser';
-
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
+
+
 app.use(bodyparser.json()); //parses and send backs JSON obj
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(cookieParser());

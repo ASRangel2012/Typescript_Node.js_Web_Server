@@ -5,3 +5,7 @@ export class Category {
     public description: string
   ) {} //end constructor
 } //end Category class
+
+const categoryArray: Category[] = [];
+let GlobalSalt = '';
+export { categoryArray, GlobalSalt };
