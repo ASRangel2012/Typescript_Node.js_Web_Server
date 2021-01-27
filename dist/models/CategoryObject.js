@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GlobalSalt = exports.categoryArray = exports.Category = void 0;
+exports.categoryArray = exports.Category = void 0;
 class Category {
-    constructor(categoryId, name, description) {
+    constructor(categoryId, categoryName, categoryDescription) {
         this.categoryId = categoryId;
-        this.name = name;
-        this.description = description;
-    } //end constructor
-} //end Category class
+        this.categoryName = categoryName;
+        this.categoryDescription = categoryDescription;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryDescription = categoryDescription;
+    } // end constructor
+}
 exports.Category = Category;
 const categoryArray = [];
 exports.categoryArray = categoryArray;
-let GlobalSalt = '';
-exports.GlobalSalt = GlobalSalt;
 //# sourceMappingURL=CategoryObject.js.map

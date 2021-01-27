@@ -1,41 +1,34 @@
 import express from "express";
 import bodyparser from "body-parser";
-import { User, userArray } from "./models/userObj";
 import { usersRouter } from "./routes/Users";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { postsRouter } from "./routes/Posts";
+import { catRouter } from "./routes/Categories";
+import { postCatRouter } from "./routes/PostCategories";
+import { commentRouter } from "./routes/Comment";
 
-const app = express();
-const port = 3000;
+let app = express();
+const PORT = 3000;
 
-
+app.use(cors({credentials: true, origin: true}));
 app.use(bodyparser.json()); //parses and send backs JSON obj
-app.use(bodyparser.urlencoded({extended:true}));
+//app.use(bodyparser.urlencoded({extended:true}));
 app.use(cookieParser());
 
 //routes 
-app.use('/', usersRouter);
-
-//listening to specified port
-app.listen(port, () => {
-  console.log(`Listening on port ${port}!`);
+app.use('/Users', usersRouter);
+app.use('/Posts', postsRouter);
+app.use('/Categories', catRouter);
+app.use('/PostCategory', postCatRouter);
+app.use('/Comments', commentRouter);
+// handle anything else 
+app.all('*', function(req,res){
+  res.redirect("/Posts");
+});
+//listening to specified PORT
+app.listen(PORT, () => {
+  console.log(`Listening on PORT ${PORT}!`);
 });
 
-/*
-Database stuff 
 
-const uriconnection'String =
-  "mongodb+srv://asrangel2012:ASR2269439s!@cluster0.gpct4.mongodb.net/mongoDB_backend_API?retryWrites=true&w=majority";
-const db = mongoose.connection;
-mongoose.connect(uriConnectiongString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-}, () => {
-  console.log('connected to the database!')
-});
-
-db.on("error", (err: any) => {
-  console.error("connection error", err);
-});
-*/

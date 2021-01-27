@@ -1,4 +1,4 @@
-import EmailValidator from "email-validator";
+import EmailValidator, { validate } from "email-validator";
 import bcyrpt from "bcrypt";
 
 interface I_user {
@@ -32,19 +32,30 @@ export class User implements I_user {
       )
       : false;
   }
+  
+  // remove password from results 
   toJson() {
     let repeatUser = <any>User.toUser(this);
     delete repeatUser.password;
     return repeatUser;
   }
-
+  
+  // validate emal using validator 
   static ValidateEmail(emailAddress: string): boolean {
     return EmailValidator.validate(emailAddress);
   }
 
+  // use bcrypt to validate pass
   ValidatePassword(password: string) {
     return bcyrpt.compare(password, this.password);
   }
+
+  setPassword(password: string){
+    bcyrpt.hash(password,10, (_err,hash)=>{
+      this.password = hash;
+    });
+  }
+
 } //end USER class
 
 const userArray: User[] = [];
