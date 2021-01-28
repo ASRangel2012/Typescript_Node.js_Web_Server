@@ -34,7 +34,7 @@ postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) 
     }
 });
 // PostCategory POST ROUTE
-postCatRouter.post("/Posts/:postId/PostCategory/:categoryId", (req, res, next) => {
+postCatRouter.post("/Posts/:postId/:categoryId", (req, res, next) => {
     // Check that Token 
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
@@ -42,10 +42,13 @@ postCatRouter.post("/Posts/:postId/PostCategory/:categoryId", (req, res, next) =
         if (!req.body.postId || !req.body.categoryId) {
             res.status(406).send({ message: "Need a postID and a categoryId, mate. Try again!" });
         }
-        else {
+        if (PostCategoryObject_1.postCategoryArray.filter((postCat) => postCat.categoryId == postCat.categoryId).length === 0) {
             var onPostCat = new PostCategoryObject_1.PostCategory(req.body.postId, req.body.categoryId);
             PostCategoryObject_1.postCategoryArray[PostCategoryObject_1.postCategoryArray.length] = onPostCat; //push to array
             res.status(200).send(onPostCat);
+        }
+        else {
+            res.status(409).send({ message: "Duplicate categoryId" });
         }
     }
     else {

@@ -35,14 +35,13 @@ catRouter.post("/", (req, res, next) => {
     //check that REQ for the right stuffff if(title or content not present )
     if(!req.body.categoryName|| !req.body.categoryDescription){
       res.status(406).send({message:"Check yourself,fool. Categories need a NAME and DESCRIPTIOn."});
-    }else{
-        //definitely took this from your lecture --> giving credit where it's due
-        var onCat = new Category(categoryArray.length==0?1:Math.max.apply(Math,categoryArray.map((somePost)=>{return somePost.categoryId; }))+1, req.body.categoryName, req.body.categoryDescription);
-        categoryArray[categoryArray.length]=onCat;//push to array
-        res.status(200).send(onCat); 
     }
+      //definitely took this from your lecture --> giving credit where it's due
+      var onCat = new Category(categoryArray.length==0?1:Math.max.apply(Math,categoryArray.map((someCat)=>{return someCat.categoryId; }))+1, req.body.categoryName, req.body.categoryDescription);
+      categoryArray[categoryArray.length]=onCat;//push to array
+      res.status(200).send(onCat); 
   }else{
-    res.status(401).send({message:"No way, Jose. You are not authorized! Try again with a correct bearer token! "})
+    res.status(401).send({message:"No way, Jose. You are not authorized! Try again with a correct bearer token! "});
   }
 });
 
