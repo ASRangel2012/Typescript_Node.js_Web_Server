@@ -88,7 +88,6 @@ usersRouter.patch("/:userId", (req, res, next) => {
 usersRouter.get("/:userId", (req, res, next) => {
   let currUser = JWTAuthorization.ValidateToken(req.headers);
   if (currUser instanceof User) {
-
     if (userArray.some((user) => user.userId === req.params.userId)) {
       res.status(200).send(currUser);
     } else {
@@ -100,7 +99,7 @@ usersRouter.get("/:userId", (req, res, next) => {
 });
 
 usersRouter.get("/:userId/:password", (req, res, next) => {
-  let currUser = userArray.filter((user) => user.userId === req.params.userId);
+  let currUser = userArray.filter((user) => user.userId ===req.params.userId);
   if (currUser.length > 0) {
     currUser[0].ValidatePassword(req.params.password).then((checkPassword) => {
       if (checkPassword) {
@@ -113,6 +112,8 @@ usersRouter.get("/:userId/:password", (req, res, next) => {
       .catch((exception) => {
         console.log(exception);
       });
+  }else{
+    res.status(401).send({ message: "Invalid password or userName" });
   }
 });
 

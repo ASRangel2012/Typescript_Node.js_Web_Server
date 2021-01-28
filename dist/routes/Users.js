@@ -58,26 +58,33 @@ usersRouter.patch("/:userId", (req, res, next) => {
     // do AUTHJWT prior to doing a patch request
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
-        // patch a user and send correct status codes.. accepts param userID
-        if (userObj_1.userArray.some((user) => user.userId === req.params.userId)) {
-            // create var to hold current user
-            let currentUser = userObj_1.userArray.find((user) => user.userId === req.params.userId);
-            if (req.body.firstName)
-                currentUser.firstName = req.body.firstName;
-            console.log("Successfully changed first name!");
-            if (req.body.lastName)
-                currentUser.lastName = req.body.lastName;
-            console.log("Successfully changed last name!");
-            if (req.body.emailAddress)
-                currentUser.emailAddress = req.body.emailAddress;
-            console.log("Successfully changed email address!");
-            if (req.body.password)
-                currentUser.password = req.body.userPassword;
-            console.log("Successfully changed password!");
+        //locate user
+        let currentUser = userObj_1.userArray.filter(user => user.userId === req.params.userId);
+        if (currentUser.length > 0) {
+            if (currentUser[0].userId === currUser.userId) {
+                if (req.body.firstName) {
+                    currentUser[0].firstName = req.body.firstName;
+                }
+                if (req.body.lastName) {
+                    currentUser[0].lastName = req.body.lastName;
+                }
+                if (req.body.emailAddress) {
+                    currentUser[0].emailAddress = req.body.emailAddress;
+                }
+                res.status(200).send(currentUser[0]);
+            }
+            else {
+                res.status(401).send({ message: `Unauthorized Access, Request Denied for USER: ${currUser.userId}. Please note only the original user can make desired changes.` });
+            }
         }
         else {
-            res.status(404).send({ message: "User not located or does not exist..." });
+            // Post Not Found
+            res.status(404).send({ message: `User: ${req.params.userId} cannot be located, pleaset try using a different userId.` });
         }
+    }
+    else {
+        // Not Authorized 
+        res.status(401).send({ message: "Get yourself a TOKEN. NOT AUTHORIZED FOOL " });
     }
 }); // END PATCH REQUEST
 //  ALL GET REQUEST
@@ -110,6 +117,9 @@ usersRouter.get("/:userId/:password", (req, res, next) => {
             .catch((exception) => {
             console.log(exception);
         });
+    }
+    else {
+        res.status(401).send({ message: "Invalid password or userName" });
     }
 });
 //Still returning the password, but it is hashed at least.

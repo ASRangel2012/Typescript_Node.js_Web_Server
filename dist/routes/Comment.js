@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const CommentObject_1 = require("../models/CommentObject");
+const PostObject_1 = require("../models/PostObject");
 const userObj_1 = require("../models/userObj");
 const jwtAuth_1 = require("../utils/jwtAuth");
 const commentRouter = express_1.default.Router();
 exports.commentRouter = commentRouter;
 // DELETE ROUTES
-commentRouter.delete("/:postId/:commentId", (req, res, next) => {
+commentRouter.delete("/Posts/:postId/Comments/:commentId", (req, res, next) => {
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
         //once verified get the comment that needs to be deleted 
@@ -34,7 +35,7 @@ commentRouter.delete("/:postId/:commentId", (req, res, next) => {
     }
 });
 // comment ROUTES
-commentRouter.post("/:postId", (req, res, next) => {
+commentRouter.post("/Posts/:postId", (req, res, next) => {
     // Check that Token 
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
@@ -52,7 +53,7 @@ commentRouter.post("/:postId", (req, res, next) => {
     }
 });
 // ALL PATCH REQUEST
-commentRouter.patch("/postId/:commentId", (req, res, next) => {
+commentRouter.patch("/Posts/:postId/Comments/:commentId", (req, res, next) => {
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers); // Check for Authorized User 
     if (currUser instanceof userObj_1.User) {
         let currentComment = CommentObject_1.commentArray.filter(currcomment => currcomment.commentId === +req.params.commentId);
@@ -79,8 +80,17 @@ commentRouter.patch("/postId/:commentId", (req, res, next) => {
     }
 });
 // ALL GET REQUEST
-commentRouter.get("/:commentId", (req, res, next) => {
-    // locate Cat
+commentRouter.get("/Posts/:postId", (req, res, next) => {
+    // locate Comment related to post
+    let commentRelatedPost = PostObject_1.postArray.filter(currPost => currPost.postId === +req.params.postId);
+    if (commentRelatedPost.length > 0) {
+        res.status(200).send(CommentObject_1.commentArray.filter(comment => comment.commentId === +req.params.commentId));
+    }
+    else {
+        res.status(404).send({ message: `${req.params.commentId} not found` });
+    }
+});
+commentRouter.get("/Posts/:postId/Comments/:commentId", (req, res, next) => {
     let comment = CommentObject_1.commentArray.filter(currcomment => currcomment.commentId === +req.params.commentId);
     if (comment.length > 0) {
         res.status(200).send(comment[0]);

@@ -35,7 +35,8 @@ class JWTAuthorization {
     } //end VALIDATETOKEN()
     static CreateToken(user) {
         console.log(user);
-        let token = jsonwebtoken_1.default.sign({ UserData: user }, JWTAuthorization.SecretSalt, { expiresIn: 15000, subject: user.userId });
+        const exp = 15000;
+        let token = jsonwebtoken_1.default.sign({ UserData: user }, JWTAuthorization.SecretSalt, { expiresIn: exp, subject: user.userId });
         console.log(token);
         return token;
     }

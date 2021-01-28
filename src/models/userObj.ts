@@ -6,7 +6,7 @@ interface I_user {
   firstName: string;
   lastName: string;
   emailAddress: string;
-  password: string;
+  password?: string;
 }
 
 export class User implements I_user {
@@ -34,7 +34,7 @@ export class User implements I_user {
   }
   
   // remove password from results 
-  toJson() {
+   toJson() {
     let repeatUser = <any>User.toUser(this);
     delete repeatUser.password;
     return repeatUser;

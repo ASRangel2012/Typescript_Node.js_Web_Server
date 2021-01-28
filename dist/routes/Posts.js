@@ -43,15 +43,8 @@ postsRouter.post("/", (req, res, next) => {
             res.status(406).send({ message: "Check yourself,fool. Post's need a TITLE and CONTENT." });
         }
         else {
-            let date = req.body.createdDate;
-            date = Date.now;
-            let update = req.body.lastUpdated;
-            update = Date.now;
-            //definitely took this from your lecture. The date will not appear no matter what I do.
-            var onPost = new PostObject_1.Post(PostObject_1.postArray.length == 0 ? 1 : Math.max.apply(Math, PostObject_1.postArray.map((somePost) => { return somePost.postId; })) + 1, date, req.body.title, req.body.content, currUser.userId, req.body.headerImage, update);
-            //currPost.createdDate.toDateString = req.body.createdDate;
-            //currPost.lastUpdated.toDateString = req.body.lastUpdated;
-            // var curriPost = Post.toPost(req.body); //doesn't like this at all --> boolean 
+            //definitely took this from your lecture. 
+            var onPost = new PostObject_1.Post(PostObject_1.postArray.length == 0 ? 1 : Math.max.apply(Math, PostObject_1.postArray.map((somePost) => { return somePost.postId; })) + 1, req.body.date, req.body.title, req.body.content, currUser.userId, req.body.headerImage, req.body.lastUpdated);
             PostObject_1.postArray[PostObject_1.postArray.length] = onPost; //push to array
             res.status(200).send(onPost);
         }
@@ -60,7 +53,6 @@ postsRouter.post("/", (req, res, next) => {
         res.status(401).send({ message: "No way, Jose. You are not authorized! Try again with a correct bearer token! " });
     }
 });
-//var onPost = new Post(postArray.length==0?1:Math.max.apply(Math,postArray.map((somePost)=>{return somePost.postId; }))+1,req.body.title, req.body.content,req.body.user);
 // ALL PATCH REQUEST
 postsRouter.patch("/:postId", (req, res, next) => {
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers); // Check for Authorized User 
@@ -93,7 +85,7 @@ postsRouter.patch("/:postId", (req, res, next) => {
         }
         else {
             // Post Not Found
-            res.status(404).send({ message: `Post: ${req.params.postId} cannot be located, pleaset try using a differnt postId.` });
+            res.status(404).send({ message: `Post: ${req.params.postId} cannot be located, pleaset try using a different postId.` });
         }
     }
     else {

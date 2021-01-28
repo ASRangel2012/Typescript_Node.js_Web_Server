@@ -11,7 +11,7 @@ const jwtAuth_1 = require("../utils/jwtAuth");
 const postCatRouter = express_1.default.Router();
 exports.postCatRouter = postCatRouter;
 // DELETE ROUTES
-postCatRouter.delete("/:postId/:categoryId", (req, res, next) => {
+postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) => {
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
         //once verified get the category that needs to be deleted 
@@ -34,7 +34,7 @@ postCatRouter.delete("/:postId/:categoryId", (req, res, next) => {
     }
 });
 // PostCategory POST ROUTE
-postCatRouter.post("/:postId/:categoryId", (req, res, next) => {
+postCatRouter.post("/Posts/:postId/PostCategory/:categoryId", (req, res, next) => {
     // Check that Token 
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
@@ -53,7 +53,7 @@ postCatRouter.post("/:postId/:categoryId", (req, res, next) => {
     }
 });
 // ALL GET REQUEST
-postCatRouter.get("/:postId", (req, res, next) => {
+postCatRouter.get("/Posts/:postId", (req, res, next) => {
     // locate Cat
     let category = PostCategoryObject_1.postCategoryArray.filter(currCategory => currCategory.categoryId === +req.params.categoryId);
     if (category.length > 0) {
@@ -63,7 +63,7 @@ postCatRouter.get("/:postId", (req, res, next) => {
         res.status(404).send({ message: `Category: ${req.params.categoryId} not found` });
     }
 });
-postCatRouter.get("/Posts/:categoryId", (req, res, next) => {
+postCatRouter.get("", (req, res, next) => {
     res.status(200).send(PostCategoryObject_1.postCategoryArray);
 });
 //# sourceMappingURL=PostCategories.js.map
