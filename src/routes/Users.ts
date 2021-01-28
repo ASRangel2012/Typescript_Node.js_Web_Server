@@ -10,7 +10,6 @@ const usersRouter = express.Router();
 usersRouter.delete("/:userId", (req, res, next) => {
   let currUser = JWTAuthorization.ValidateToken(req.headers);
   if (currUser instanceof User) {
-
     //locate user to delete 
     if (userArray.some((user) => user.userId === req.params.userId)) {
       // const userIDX = req.params.userId;
@@ -40,7 +39,6 @@ usersRouter.post("/", (req, res, next) => {
       // validate email address upon creation
       if (User.ValidateEmail(currUser.emailAddress)) {
         // if valid email, setPassword and add new user to userArray
-
         currUser.setPassword(req.body.password);
         userArray[userArray.length] = currUser;
         res.status(201).send(currUser.toJson());
@@ -68,14 +66,18 @@ usersRouter.patch("/:userId", (req, res, next) => {
           currentUser[0].lastName = req.body.lastName;
         }
         if (req.body.emailAddress) {
-          currentUser[0].emailAddress = req.body.emailAddress;
+          if (User.ValidateEmail(req.body.emailAddress)) {
+            currentUser[0].emailAddress = req.body.emailAddress;
+          } else {
+            res.status(418).send({ message: `${req.body.emailAddress} does not follow the correct format,now you're teapot. ` });
+          }
         }
         res.status(200).send(currentUser[0]);
       } else {
         res.status(401).send({ message: `Unauthorized Access, Request Denied for USER: ${currUser.userId}. Please note only the original user can make desired changes.` });
       }
     } else {
-      // Post Not Found
+      // User Not Found
       res.status(404).send({ message: `User: ${req.params.userId} cannot be located, pleaset try using a different userId.` });
     }
   } else {
@@ -99,7 +101,7 @@ usersRouter.get("/:userId", (req, res, next) => {
 });
 
 usersRouter.get("/:userId/:password", (req, res, next) => {
-  let currUser = userArray.filter((user) => user.userId ===req.params.userId);
+  let currUser = userArray.filter((user) => user.userId === req.params.userId);
   if (currUser.length > 0) {
     currUser[0].ValidatePassword(req.params.password).then((checkPassword) => {
       if (checkPassword) {
@@ -112,7 +114,7 @@ usersRouter.get("/:userId/:password", (req, res, next) => {
       .catch((exception) => {
         console.log(exception);
       });
-  }else{
+  } else {
     res.status(401).send({ message: "Invalid password or userName" });
   }
 });

@@ -69,7 +69,12 @@ usersRouter.patch("/:userId", (req, res, next) => {
                     currentUser[0].lastName = req.body.lastName;
                 }
                 if (req.body.emailAddress) {
-                    currentUser[0].emailAddress = req.body.emailAddress;
+                    if (userObj_1.User.ValidateEmail(req.body.emailAddress)) {
+                        currentUser[0].emailAddress = req.body.emailAddress;
+                    }
+                    else {
+                        res.status(418).send({ message: `${req.body.emailAddress} does not follow the correct format,now you're teapot. ` });
+                    }
                 }
                 res.status(200).send(currentUser[0]);
             }
@@ -78,7 +83,7 @@ usersRouter.patch("/:userId", (req, res, next) => {
             }
         }
         else {
-            // Post Not Found
+            // User Not Found
             res.status(404).send({ message: `User: ${req.params.userId} cannot be located, pleaset try using a different userId.` });
         }
     }
