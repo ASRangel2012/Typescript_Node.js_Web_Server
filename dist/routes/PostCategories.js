@@ -11,7 +11,7 @@ const jwtAuth_1 = require("../utils/jwtAuth");
 const postCatRouter = express_1.default.Router();
 exports.postCatRouter = postCatRouter;
 // DELETE ROUTES
-postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) => {
+postCatRouter.delete("Posts/:postId/Categories:categoryId", (req, res, next) => {
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
         //once verified get the category that needs to be deleted 
@@ -34,7 +34,7 @@ postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) 
     }
 });
 // PostCategory POST ROUTE
-postCatRouter.post("/Posts/:postId/:categoryId", (req, res, next) => {
+postCatRouter.post("/Posts/:postId/Categories/:categoryId", (req, res, next) => {
     // Check that Token 
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
@@ -66,7 +66,7 @@ postCatRouter.get("/Posts/:postId", (req, res, next) => {
         res.status(404).send({ message: `Category: ${req.params.categoryId} not found` });
     }
 });
-postCatRouter.get("", (req, res, next) => {
+postCatRouter.get("/", (req, res, next) => {
     res.status(200).send(PostCategoryObject_1.postCategoryArray);
 });
 //# sourceMappingURL=PostCategories.js.map

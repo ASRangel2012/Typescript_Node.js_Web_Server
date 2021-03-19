@@ -94,6 +94,17 @@ postsRouter.get("/:postId", (req, res, next) => {
   }
 });
 
+postsRouter.get("Users/:userId", (req, res, next) => {
+  // locate post 
+  let post = postArray.filter(post => post.userId === req.params.userId);
+  if (post.length > 0) {
+    res.status(200).send(post);
+  }
+  else {
+    res.status(404).send({ message: `Post from user not found` });
+  }
+});
+
 postsRouter.get("/", (req, res, next) => {
   // get all posts --> No need to authenticate 
   res.status(200).send(postArray);

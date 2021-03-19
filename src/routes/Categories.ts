@@ -11,10 +11,11 @@ catRouter.delete("/:categoryId", (req,res,next) =>{
   let currUser = JWTAuthorization.ValidateToken(req.headers);
   if(currUser instanceof User){
     //once verified get the category that needs to be deleted 
-    let onDeleteCategory = categoryArray.filter(currCategory => currCategory.categoryId===+req.params.categoryId);
+    let onDeleteCategory = categoryArray.filter(currCategory => currCategory.categoryId===parseInt(req.params.categoryId));
     if(onDeleteCategory.length>0){ 
-      if(onDeleteCategory[0].categoryId === req.body.categoryId){
-        categoryArray.splice(categoryArray.findIndex(category => category.categoryId ===+ req.params.categoryId), 1);
+      if(onDeleteCategory[0].categoryId === parseInt(req.params.categoryId)){
+        const catIDX = categoryArray.findIndex(category => category.categoryId === parseInt(req.params.categoryId))
+        categoryArray.splice(catIDX, 1)
         res.status(204).send({message: 'Deleted'});
       }else{
         res.status(404).send({message:`Category: ${req.params.categoryId} does not exist!`});
@@ -35,11 +36,12 @@ catRouter.post("/", (req, res, next) => {
     //check that REQ for the right stuffff if(title or content not present )
     if(!req.body.categoryName|| !req.body.categoryDescription){
       res.status(406).send({message:"Check yourself,fool. Categories need a NAME and DESCRIPTIOn."});
-    }
+    }else{
       //definitely took this from your lecture --> giving credit where it's due
       var onCat = new Category(categoryArray.length==0?1:Math.max.apply(Math,categoryArray.map((someCat)=>{return someCat.categoryId; }))+1, req.body.categoryName, req.body.categoryDescription);
       categoryArray[categoryArray.length]=onCat;//push to array
       res.status(200).send(onCat); 
+    } 
   }else{
     res.status(401).send({message:"No way, Jose. You are not authorized! Try again with a correct bearer token! "});
   }

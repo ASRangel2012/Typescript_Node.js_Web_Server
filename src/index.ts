@@ -8,8 +8,10 @@ import { catRouter } from "./routes/Categories";
 import { postCatRouter } from "./routes/PostCategories";
 import { commentRouter } from "./routes/Comment";
 
+
 let app = express();
 const PORT = 3000;
+
 
 app.use(cors({credentials: true, origin: true}));
 app.use(bodyparser.json()); //parses and send backs JSON obj
@@ -23,9 +25,9 @@ app.use('/Categories', catRouter);
 app.use('/PostCategory', postCatRouter);
 app.use('/Comments', commentRouter);
 // handle anything else 
-app.all('*', function(req,res){
-  res.redirect("/Posts");
-});
+
+
+
 //listening to specified PORT
 app.listen(PORT, () => {
   console.log(`Listening on PORT ${PORT}!`);

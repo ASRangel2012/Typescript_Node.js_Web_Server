@@ -100,7 +100,7 @@ usersRouter.get("/:userId", (req, res, next) => {
             res.status(200).send(currUser);
         }
         else {
-            res.status(404).send({ message: "User not located or does not exist!" });
+            res.status(404).send({ message: "User not located!" });
         }
     }
     else {
@@ -132,10 +132,16 @@ usersRouter.get("/", (req, res, next) => {
     // verify token
     let currUser = jwtAuth_1.JWTAuthorization.ValidateToken(req.headers);
     if (currUser instanceof userObj_1.User) {
-        res.status(200).send(userObj_1.userArray);
+        if (userObj_1.userArray.length < 0) {
+            res.status(401).send({ message: 'No Users in the array to show. Please add a new user...' });
+        }
+        else {
+            let removePass = userObj_1.userArray.map(userObj_1.User.toUser);
+            res.status(200).send(removePass);
+        }
     }
     else {
-        res.status(401).send({ message: "No users to show or you are not authorized" });
+        res.status(401).send({ message: "You are not authorized, please try again." });
     }
 });
 //# sourceMappingURL=Users.js.map

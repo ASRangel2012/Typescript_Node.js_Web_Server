@@ -7,7 +7,7 @@ import { JWTAuthorization } from '../utils/jwtAuth';
 const postCatRouter = express.Router();
 
 // DELETE ROUTES
-postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) => {
+postCatRouter.delete("Posts/:postId/Categories:categoryId", (req, res, next) => {
   let currUser = JWTAuthorization.ValidateToken(req.headers);
   if (currUser instanceof User) {
     //once verified get the category that needs to be deleted 
@@ -28,7 +28,7 @@ postCatRouter.delete("Posts/:postId/PostCategory/:categoryId", (req, res, next) 
 });
 
 // PostCategory POST ROUTE
-postCatRouter.post("/Posts/:postId/:categoryId", (req, res, next) => {
+postCatRouter.post("/Posts/:postId/Categories/:categoryId", (req, res, next) => {
   // Check that Token 
   let currUser = JWTAuthorization.ValidateToken(req.headers);
   if (currUser instanceof User) {
@@ -36,7 +36,7 @@ postCatRouter.post("/Posts/:postId/:categoryId", (req, res, next) => {
     if (!req.body.postId || !req.body.categoryId) {
       res.status(406).send({ message: "Need a postID and a categoryId, mate. Try again!" });
     }
-    if (postCategoryArray.filter((postCat) => postCat.categoryId == (<PostCategory>postCat).categoryId).length === 0) {
+    if(postCategoryArray.filter((postCat) => postCat.categoryId == (<PostCategory>postCat).categoryId).length === 0) {
       var onPostCat = new PostCategory(req.body.postId, req.body.categoryId);
       postCategoryArray[postCategoryArray.length] = onPostCat;//push to array
       res.status(200).send(onPostCat);
@@ -59,7 +59,7 @@ postCatRouter.get("/Posts/:postId", (req, res, next) => {
   }
 });
 
-postCatRouter.get("", (req, res, next) => {
+postCatRouter.get("/", (req, res, next) => {
   res.status(200).send(postCategoryArray);
 });
 

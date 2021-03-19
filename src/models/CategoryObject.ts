@@ -17,6 +17,5 @@ export class Category implements I_category{
  
 }
 
-
 const categoryArray: Category[] = [];
 export { categoryArray};

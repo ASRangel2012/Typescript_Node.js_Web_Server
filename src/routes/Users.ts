@@ -93,7 +93,7 @@ usersRouter.get("/:userId", (req, res, next) => {
     if (userArray.some((user) => user.userId === req.params.userId)) {
       res.status(200).send(currUser);
     } else {
-      res.status(404).send({ message: "User not located or does not exist!" });
+      res.status(404).send({ message: "User not located!" });
     }
   } else {
     res.status(401).send({ message: "Not Authorized!" });
@@ -122,11 +122,17 @@ usersRouter.get("/:userId/:password", (req, res, next) => {
 //Still returning the password, but it is hashed at least.
 usersRouter.get("/", (req, res, next) => {
   // verify token
-  let currUser = JWTAuthorization.ValidateToken(req.headers);
-  if (currUser instanceof User) {
-    res.status(200).send(userArray);
+  let currUser = JWTAuthorization.ValidateToken(req.headers)
+  if (currUser instanceof User)
+  {
+    if(userArray.length < 0){
+      res.status(401).send({message: 'No Users in the array to show. Please add a new user...'});
+    }else{
+      let removePass = userArray.map(User.toUser)
+      res.status(200).send(removePass)
+    }
   } else {
-    res.status(401).send({ message: "No users to show or you are not authorized" });
+    res.status(401).send({ message: "You are not authorized, please try again." });
   }
 });
 

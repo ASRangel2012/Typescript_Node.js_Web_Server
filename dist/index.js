@@ -25,9 +25,6 @@ app.use('/Categories', Categories_1.catRouter);
 app.use('/PostCategory', PostCategories_1.postCatRouter);
 app.use('/Comments', Comment_1.commentRouter);
 // handle anything else 
-app.all('*', function (req, res) {
-    res.redirect("/Posts");
-});
 //listening to specified PORT
 app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}!`);
